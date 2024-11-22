@@ -1,0 +1,43 @@
+{
+    "id": "/index.html",
+    "name": "VITE PWA Victor",
+    "short_name": "PWA",
+    "description": "Aplicativo de receitas organizadas por categoria.",
+    "icons": [
+        {
+            "src": "/images/icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "/images/icon-256.png",
+            "sizes": "256x256",
+            "type": "image/png"
+        },
+        {
+            "src": "/images/icon-144.png",
+            "sizes": "144x144",
+            "type": "image/png"
+        }
+    ],
+    "screenshots": [
+        {
+            "src": "/images/screenshot-wide.png",
+            "sizes": "1792x828",
+            "type": "image/png",
+            "form_factor": "wide"
+        },
+        {
+            "src": "/images/screenshot-mobile.png",
+            "sizes": "828x1792",
+            "type": "image/png",
+            "form_factor": "narrow"
+        }
+    ],
+    "lang": "pt-BR",
+    "start_url": "/index.html",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#ffffff"
+}
