@@ -4,7 +4,7 @@ import { registerRoute, Route } from 'workbox-routing';
 import { CacheableResponsePlugin } from 'workbox-cacheable-response';
 import { ExpirationPlugin } from 'workbox-expiration';
 
-// Configurando o cache de páginas
+// configurando o cache
 const pageCache = new CacheFirst({
   cacheName: 'primeira-pwa-cache',
   plugins: [
@@ -12,51 +12,47 @@ const pageCache = new CacheFirst({
       statuses: [0, 200],
     }),
     new ExpirationPlugin({
-      maxAgeSeconds: 30 * 24 * 60 * 60, // 30 dias
+      maxAgeSeconds: 30 * 24 * 60 * 60,
     }),
   ],
 });
 
-// Indicando o cache de páginas
+//indicando o cache de página
 warmStrategyCache({
-  urls: ['/index.html', '/'], // URLs para pré-cache
+  urls: ['/index.html', '/'],
   strategy: pageCache,
 });
+//registrando a rota
+registerRoute(({ request }) => request.mode === 'navigate', pageCache);
 
-// Registrando a rota para navegação
-registerRoute(
-  ({ request }) => request.mode === 'navigate',
-  pageCache
-);
-
-// Configurando o cache de assets
+// configurando cache de assets
 registerRoute(
   ({ request }) => ['style', 'script', 'worker'].includes(request.destination),
   new StaleWhileRevalidate({
     cacheName: 'asset-cache',
     plugins: [
       new CacheableResponsePlugin({
-        statuses: [0, 200], 
+        statuses: [0, 200],
       }),
     ],
-  })
+  }),
 );
 
+// configurando offline fallback
 offlineFallback({
-  pageFallback: '/offline.html', 
+  pageFallback: '/offline.html',
 });
 
-// Cache para imagens com tempo de expiração
-const imageRoute = new Route(
-  ({ request }) => request.destination === 'image',
-  new CacheFirst({
-    cacheName: 'images',
-    plugins: [
-      new ExpirationPlugin({
-        maxAgeSeconds: 60 * 60 * 24 * 30, // 30 dias
-      }),
-    ],
-  })
-);
+const imageRoute = new Route(({ request }) => {
+  return request.destination === 'image';
+}, new CacheFirst({
+  cacheName: 'images',
+  plugins: [
+    new ExpirationPlugin({
+      maxAgeSeconds: 60 * 60 * 24 * 30,
+    })
+  ]
+}));
 
 registerRoute(imageRoute);
+
